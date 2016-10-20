@@ -1,12 +1,12 @@
 package org.embulk.output.kudu.setter;
 
 import org.embulk.spi.time.Timestamp;
-import org.kududb.Type;
-import org.kududb.client.PartialRow;
+import org.apache.kudu.Type;
+import org.apache.kudu.client.PartialRow;
 
-public class TimestampColumnSetter extends ColumnSetter {
-    public TimestampColumnSetter(int index) {
-        super(index, Type.TIMESTAMP);
+public class UnixTimeMicroColumnSetter extends ColumnSetter {
+    public UnixTimeMicroColumnSetter(int index) {
+        super(index, Type.UNIXTIME_MICROS);
     }
 
     @Override

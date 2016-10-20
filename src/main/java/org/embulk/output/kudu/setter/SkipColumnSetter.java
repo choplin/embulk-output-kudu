@@ -1,7 +1,7 @@
 package org.embulk.output.kudu.setter;
 
 import org.embulk.spi.time.Timestamp;
-import org.kududb.client.PartialRow;
+import org.apache.kudu.client.PartialRow;
 import org.msgpack.value.Value;
 
 public class SkipColumnSetter extends ColumnSetter {

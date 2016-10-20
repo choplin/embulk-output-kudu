@@ -3,7 +3,7 @@ package org.embulk.output.kudu.setter;
 import org.embulk.spi.Column;
 import org.embulk.spi.ColumnVisitor;
 import org.embulk.spi.PageReader;
-import org.kududb.client.PartialRow;
+import org.apache.kudu.client.PartialRow;
 
 import java.util.List;
 

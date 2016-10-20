@@ -22,7 +22,7 @@ import org.embulk.output.kudu.setter.Int64ColumnSetter;
 import org.embulk.output.kudu.setter.Int8ColumnSetter;
 import org.embulk.output.kudu.setter.SkipColumnSetter;
 import org.embulk.output.kudu.setter.StringColumnSetter;
-import org.embulk.output.kudu.setter.TimestampColumnSetter;
+import org.embulk.output.kudu.setter.UnixTimeMicroColumnSetter;
 import org.embulk.spi.Column;
 import org.embulk.spi.Exec;
 import org.embulk.spi.OutputPlugin;
@@ -32,13 +32,13 @@ import org.embulk.spi.Schema;
 import org.embulk.spi.TransactionalPageOutput;
 import org.embulk.spi.time.TimestampFormatter;
 import org.embulk.spi.util.Timestamps;
-import org.kududb.ColumnSchema;
-import org.kududb.client.Insert;
-import org.kududb.client.KuduClient;
-import org.kududb.client.KuduSession;
-import org.kududb.client.KuduTable;
-import org.kududb.client.PartialRow;
-import org.kududb.client.SessionConfiguration;
+import org.apache.kudu.ColumnSchema;
+import org.apache.kudu.client.Insert;
+import org.apache.kudu.client.KuduClient;
+import org.apache.kudu.client.KuduSession;
+import org.apache.kudu.client.KuduTable;
+import org.apache.kudu.client.PartialRow;
+import org.apache.kudu.client.SessionConfiguration;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -129,7 +129,7 @@ public class KuduOutputPlugin
             this.table = table;
             this.timestampFormatters = timestampFormatters;
 
-            final org.kududb.Schema kuduSchema = table.getSchema();
+            final org.apache.kudu.Schema kuduSchema = table.getSchema();
 
             this.setters = Lists.transform(pageReader.getSchema().getColumns(), new Function<Column, ColumnSetter>() {
                 @Nullable
@@ -189,7 +189,7 @@ public class KuduOutputPlugin
             record.getSchema().visitColumns(new ColumnSetterVisitor(record, setters, row));
         }
 
-        private ColumnSetter newColumnSetter(Column column, org.kududb.Schema schema) {
+        private ColumnSetter newColumnSetter(Column column, org.apache.kudu.Schema schema) {
             ColumnSetter setter;
             try {
                 int index = schema.getColumnIndex(column.getName());
@@ -210,8 +210,8 @@ public class KuduOutputPlugin
                     case INT64:
                         setter = new Int64ColumnSetter(index);
                         break;
-                    case TIMESTAMP:
-                        setter = new TimestampColumnSetter(index);
+                    case UNIXTIME_MICROS:
+                        setter = new UnixTimeMicroColumnSetter(index);
                         break;
                     case FLOAT:
                         setter = new FloatColumnSetter(index);

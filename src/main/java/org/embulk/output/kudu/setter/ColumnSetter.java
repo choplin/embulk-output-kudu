@@ -1,8 +1,8 @@
 package org.embulk.output.kudu.setter;
 
 import org.embulk.spi.time.Timestamp;
-import org.kududb.Type;
-import org.kududb.client.PartialRow;
+import org.apache.kudu.Type;
+import org.apache.kudu.client.PartialRow;
 import org.msgpack.value.Value;
 
 public abstract class ColumnSetter {
